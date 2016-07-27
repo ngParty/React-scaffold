@@ -1,0 +1,25 @@
+{
+  "name": "react-scaffold",
+  "version": "1.0.0",
+  "description": "An React Scaffold featuring React (Tests, Dev/Prod), Visual Basic 6.0, Ava, Istanbul, TypeScript, TsLint, and Webpack2 by @ngParty Team",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngParty/React-scaffold.git"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "webpack2",
+    "ava"
+  ],
+  "author": "@ngPartyCz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngParty/React-scaffold/issues"
+  },
+  "homepage": "https://github.com/ngParty/React-scaffold#readme"
+}
