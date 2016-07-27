@@ -4,7 +4,8 @@
   "description": "An React Scaffold featuring React (Tests, Dev/Prod), Visual Basic 6.0, Ava, Istanbul, TypeScript, TsLint, and Webpack2 by @ngParty Team",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --env.dev --hot"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,19 @@
   "bugs": {
     "url": "https://github.com/ngParty/React-scaffold/issues"
   },
-  "homepage": "https://github.com/ngParty/React-scaffold#readme"
+  "homepage": "https://github.com/ngParty/React-scaffold#readme",
+  "devDependencies": {
+    "awesome-typescript-loader": "2.1.1",
+    "html-webpack-plugin": "2.22.0",
+    "typescript": "2.0.0",
+    "webpack": "2.1.0-beta.20",
+    "webpack-config-utils": "2.0.0",
+    "webpack-dev-server": "2.1.0-beta.0"
+  },
+  "dependencies": {
+    "@types/react": "0.14.27",
+    "@types/react-dom": "0.14.14",
+    "react": "15.2.1",
+    "react-dom": "15.2.1"
+  }
 }
