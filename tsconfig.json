@@ -1,16 +1,16 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "noImplicitAny": false,
-        "sourceMap": true,
-        "outDir": "ts-output",
-        "jsx": "react",
-        "types": [
-            "react"
-        ]
-    },
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "outDir": "ts-output",
+    "rootDir": "./",
+    "jsx": "react",
+    "pretty": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
