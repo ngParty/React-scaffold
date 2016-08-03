@@ -4,11 +4,13 @@
   "description": "An React Scaffold featuring React (Tests, Dev/Prod), Visual Basic 6.0, Ava, NYC, TypeScript, TsLint, and Webpack2 by @ngParty Team",
   "main": "index.js",
   "scripts": {
+    "pretest": "npm run lint",
     "test": "tsc && ava --verbose",
     "test:watch": "tsc -w & ava --verbose --watch",
     "cover": "nyc npm test",
     "cover:watch": "nodemon --quiet --watch src --ext ts,tsx --exec npm run cover",
     "check-coverage": "nyc --check-coverage --statements 80 --branches 80 --functions 80 --lines 80 npm test",
+    "lint": "tslint \"src/**/*.tsx\" \"src/**/*.ts\"",
     "start": "webpack-dev-server --env.dev --hot"
   },
   "repository": {
@@ -58,6 +60,8 @@
     "nyc": "7.1.0",
     "react-addons-test-utils": "15.3.0",
     "sinon": "1.17.5",
+    "tslint": "3.14.0",
+    "tslint-react": "0.4.0",
     "typescript": "2.0.0",
     "webpack": "2.1.0-beta.20",
     "webpack-config-utils": "2.0.0",
