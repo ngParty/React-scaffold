@@ -2,6 +2,7 @@ const {resolve} = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const {getIfUtils, removeEmpty} = require('webpack-config-utils')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 
 module.exports = env => {
   const {ifProd, ifNotProd} = getIfUtils(env)
@@ -14,7 +15,7 @@ module.exports = env => {
       filename: '[name].[hash].js',
       path: resolve('dist'),
       // Include comments with information about the modules.
-      pathinfo: ifNotProd(), 
+      pathinfo: ifNotProd(),
     },
 
     resolve: {
@@ -23,7 +24,7 @@ module.exports = env => {
             '.js',
             '.ts',
             '.tsx'
-        ] 
+        ]
     },
 
     devtool: ifProd('source-map', 'cheap-module-source-map'),
@@ -34,13 +35,24 @@ module.exports = env => {
         {test: /\.css$/, loaders: ['style', 'css']},
       ],
     },
+
     // This is required, when using Hot Code Replacement between multiple calls to the compiler.
-    recordsPath: resolve(__dirname, './webpack-records.json'),
+    recordsPath: resolve(__dirname, './tmp/webpack-records.json'),
 
     plugins: removeEmpty([
 
+      // Add nice progress bar
+      new ProgressBarPlugin(),
+
       new HtmlWebpackPlugin({
         template: resolve('src','index.html')
+      }),
+
+      // Set NODE_ENV to enable production react version
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: ifProd('"production"', '"development"')
+        }
       }),
 
       ifProd(new webpack.optimize.CommonsChunkPlugin({
@@ -51,6 +63,24 @@ module.exports = env => {
         minChunks: Infinity,
         name: 'inline',
       })),
+
+      // Deduplicate node modules dependencies
+      ifProd(new webpack.optimize.DedupePlugin()),
+
+      // Default webpack build options
+      ifProd(new webpack.LoaderOptionsPlugin({
+        debug: false
+      })),
+
+      // Uglify bundles
+      ifProd(new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false,
+        },
+        output: {
+          comments: false
+        }
+      }))
 
     ]),
   }

@@ -11,7 +11,8 @@
     "cover:watch": "nodemon --quiet --watch src --ext ts,tsx --exec npm run cover",
     "check-coverage": "nyc --check-coverage --statements 80 --branches 80 --functions 80 --lines 80 npm test",
     "lint": "tslint \"src/**/*.tsx\" \"src/**/*.ts\"",
-    "start": "webpack-dev-server --env.dev --hot"
+    "start": "webpack-dev-server --env.dev --hot",
+    "build": "npm run check-coverage && rimraf dist && webpack --env.prod"
   },
   "repository": {
     "type": "git",
@@ -58,7 +59,9 @@
     "jsdom": "9.4.1",
     "nodemon": "1.10.0",
     "nyc": "7.1.0",
+    "progress-bar-webpack-plugin": "1.9.0",
     "react-addons-test-utils": "15.3.0",
+    "rimraf": "2.5.4",
     "sinon": "1.17.5",
     "tslint": "3.14.0",
     "tslint-react": "0.4.0",

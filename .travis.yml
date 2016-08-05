@@ -4,4 +4,10 @@ node_js:
 install:
 - npm install
 script:
-- npm run check-coverage
+- npm run build
+after_success:
+- npm install deploy-to-gh-pages
+- node_modules/.bin/deploy-to-gh-pages dist
+env:
+  global:
+    secure: ZqPfmcWEqy0An6YjrmqBZ0hmiRIHHrK1q6qEc8jY556GCyqdDdC2vEM9Ad2H4OTNsJIccyOZK/ugJL6X5PdQ/xTnHavenQty8w81Efmx93MtI7vO1q/tYW0sul7s869lqHWxUoDoQn+Eo8wGY1Ez4wswEvvI/fL0HPqhrRADBtjGPK13eBUenygezg8OcLGG+yHkbWkt3Pl+spRJaxHhN9KlVdf6MBBoBcV/3cTyDjl7HATe9KsyXzkvJO8IgAXJSLekKFhGGR1CQR/qK6V2J6hUXZMyoXl+JOcqg6gBkxFBvzmuDaX+XNyP0LVcvnxAHbNZZegm5XDXqdVpI9oRzO6YqEh5tPC2GByR5w7ZvdydmuCeC7kG97DM3V9EQ5jTgqTIK+mMGklM8fE7Sn9WlqQyX2oJ4yGl0mYIx+eCd3vKeduL8u4HhlYiQdY4jFRyhooykgw6LkaUx5BppSE3qwl1jNn8vhNk6kFJ9HsWD6lOTBkCVF1q6jsMBO0jhy/pARMeCx2qbxRMMkjy49YjL9MEex9qPTIbmL+Dlmyf1fSmjYwYZ0D4eW+J45pPBvBhvwy2mCxgsXcSYlUEfa87XQqnM1/udKpaJ/0/jblr5dYUgJBao4s8s/9nmGKmWX8zlPJcRIQylCHkrK6klyUntEu1si7yCJ3ii+BoDC8U0Vs=

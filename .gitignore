@@ -38,3 +38,9 @@ jspm_packages
 
 # TS generated files
 ts-output
+
+# Build files
+dist
+
+# Temporary files
+tmp
