@@ -42,6 +42,7 @@ module.exports = (env) => {
     module: {
       loaders: [
         // Typescript
+        // @TODO awesome loader currently has this issue with loading @types/react-dom https://github.com/s-panferov/awesome-typescript-loader/issues/224
         { test: /\.tsx?$/, loaders: [ 'awesome-typescript-loader' ], exclude: /node_modules/ },
         // CSS
         {

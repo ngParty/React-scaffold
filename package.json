@@ -54,7 +54,7 @@
     "@types/mocha": "2.2.29",
     "@types/react-addons-test-utils": "0.14.14",
     "@types/sinon": "1.16.26",
-    "awesome-typescript-loader": "2.1.1",
+    "awesome-typescript-loader": "2.2.3",
     "chai": "3.5.0",
     "css-loader": "0.23.1",
     "enzyme": "2.4.1",
@@ -74,14 +74,15 @@
     "ts-node": "1.2.2",
     "tslint": "3.14.0",
     "tslint-react": "0.4.0",
-    "typescript": "2.0.0",
-    "webpack": "2.1.0-beta.20",
+    "typescript": "2.0.2",
+    "webpack": "2.1.0-beta.21",
     "webpack-config-utils": "2.0.0",
-    "webpack-dev-server": "2.1.0-beta.0"
+    "webpack-dev-server": "2.1.0-beta.2"
   },
   "dependencies": {
-    "@types/react": "0.14.28",
-    "@types/react-dom": "0.14.14",
+    "@types/react": "0.14.33",
+    "@types/react-dom": "0.14.16",
+    "@types/react-router": "2.0.33",
     "react": "15.3.0",
     "react-dom": "15.3.0",
     "react-router": "2.6.1"

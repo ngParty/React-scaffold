@@ -1,22 +1,22 @@
 import * as React from 'react';
-import { hashHistory, Router, RouteConfig } from 'react-router';
+import { hashHistory, Router, RouterState } from 'react-router';
 
 import { App } from './App';
 import { Home } from './home';
 import { NotFound } from './not-found';
 
 type ComponentModule = {
-  'default': Function | React.ComponentClass<any> | React.StatelessComponent<any>
+  default: Function | React.ComponentClass<any> | React.StatelessComponent<any>
 };
 
-export function createRoutes( /*store*/ ): RouteConfig[] {
+export function createRoutes( /*store*/ ): Router.RouteConfig {
   // Create reusable async injectors using getAsyncInjectors factory
-  // const { injectReducer, injectSagas } = getAsyncInjectors(store); // eslint-disable-line no-unused-vars
+  // const { injectReducer, injectSagas } = getAsyncInjectors(store);
 
   return [
     {
       path: '*',
-      getComponent( nextState: any, callback: ( error: Error, module: any ) => void ) {
+      getComponent( nextState: RouterState, callback: ( error: Error, module: any ) => void ) {
 
         System.import( `.${ nextState.location.pathname }/index` )
           .then( ( module: ComponentModule ) => {
@@ -37,7 +37,7 @@ export function createRoutes( /*store*/ ): RouteConfig[] {
   ];
 }
 
-const rootRoute: RouteConfig = {
+const rootRoute: Router.RouteConfig = {
   path: '/',
   component: App,
   indexRoute: { component: Home },
