@@ -11,7 +11,7 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const cssnext = require('postcss-cssnext');
 
 // webpack config helpers
-const { getIfUtils, removeEmpty, combineLoaders } = require('webpack-config-utils');
+const { getIfUtils, removeEmpty } = require('webpack-config-utils');
 
 module.exports = (env) => {
   const { ifProd, ifNotProd } = getIfUtils(env);
@@ -30,7 +30,6 @@ module.exports = (env) => {
 
     resolve: {
         extensions: [
-            '',
             '.js',
             '.ts',
             '.tsx'
@@ -40,32 +39,50 @@ module.exports = (env) => {
     devtool: ifProd('source-map', 'cheap-module-source-map'),
 
     module: {
-      loaders: [
+      rules: [
         // Typescript
-        // @TODO awesome loader currently has this issue with loading @types/react-dom https://github.com/s-panferov/awesome-typescript-loader/issues/224
-        { test: /\.tsx?$/, loaders: [ 'awesome-typescript-loader' ], exclude: /node_modules/ },
+        { test: /\.tsx?$/, use: [ 'awesome-typescript-loader' ], exclude: /node_modules/ },
         // CSS
         {
           test: /\.css$/,
-          loaders: ifNotProd(
-            combineLoaders( [
-              { loader: 'style-loader' },
+          // @TODO replace with "use"
+          // we need to use legacy "loader" instead of "use" to make ExtractTextPlugin@2-beta.4 work
+          loader: ifNotProd(
+            [
+              'style-loader',
               {
                 loader: 'css-loader',
-                query: {
+                options: {
                   modules: true,
                   importLoaders: 1,
                   localIdentName: '[name]__[local]___[hash:base64:5]',
-                  sourceMap: true
                 }
               },
-              { loader: 'postcss-loader' }
-            ] ),
+              {
+                loader: 'postcss-loader',
+                // @TODO
+                // allow this instead of legacy loader plugin config (webpack.LoaderOptionsPlugin)
+                // when https://github.com/postcss/postcss-loader/issues/99 is fixed
+                /*query: {
+                  plugins: () => [
+                    // Allow future CSS features to be used, also auto-prefixes the CSS...
+                    cssnext( {
+                      // ...based on this browser list
+                      browsers: [ 'last 2 versions', 'IE > 10' ],
+                    } )
+                  ]
+                }*/
+              }
+            ],
             ExtractTextPlugin.extract( {
+              // the loader(s) that should be used when the css is not extracted (i.e. in an additional chunk when allChunks: false)
               fallbackLoader: 'style-loader',
-              loader: combineLoaders( [
+              // @TODO replace with "use"
+              // ExtractTextPlugin doesn't follows latest webpack 2.0 api for loaders :(
+              loader: [
                 {
                   loader: 'css-loader',
+                  // @TODO replace with "options" when ExtractTextPlugin is fixed
                   query: {
                     modules: true,
                     importLoaders: 1,
@@ -73,7 +90,7 @@ module.exports = (env) => {
                   }
                 },
                 { loader: 'postcss-loader' }
-              ] )
+              ]
             } )
           )
         }
@@ -84,6 +101,21 @@ module.exports = (env) => {
     recordsPath: resolve(__dirname, './tmp/webpack-records.json'),
 
     plugins: removeEmpty([
+
+      // Legacy loader plugin configs
+      new webpack.LoaderOptionsPlugin( {
+        options: {
+          postcss: {
+            plugins: [
+              // Allow future CSS features to be used, also auto-prefixes the CSS...
+              cssnext( {
+                // ...based on this browser list
+                browsers: [ 'last 2 versions', 'IE > 10' ],
+              } )
+            ]
+          }
+        }
+      } ),
 
       // Add nice progress bar
       new ProgressBarPlugin(),
@@ -131,12 +163,5 @@ module.exports = (env) => {
       }))
 
     ]),
-
-    // plugins config
-    postcss: [
-      cssnext({ // Allow future CSS features to be used, also auto-prefixes the CSS...
-        browsers: ['last 2 versions', 'IE > 10'], // ...based on this browser list
-      })
-    ]
   }
 };
