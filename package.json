@@ -6,6 +6,8 @@
   "scripts": {
     "pretest": "npm run lint",
     "test:jest": "jest",
+    "test:jest:watch": "jest --watch",
+    "test:jest:cover": "jest --coverage",
     "test": "mocha --require config/setup-browser-env --watch-extensions tsx,ts --colors src/**/*.spec.ts*",
     "test:watch": "npm run test -- --watch",
     "cover": "nyc npm run test",
@@ -23,9 +25,7 @@
     "react",
     "typescript",
     "webpack2",
-    "mocha",
-    "enzyme",
-    "jsdom"
+    "jest"
   ],
   "author": "@ngPartyCz",
   "license": "ISC",
@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/ngParty/React-scaffold#readme",
   "jest": {
+    "bail": true,
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -45,6 +46,14 @@
     "moduleNameMapper": {
       "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/fileMock.js",
       "^.+\\.(css|less|sass)$": "identity-obj-proxy"
+    },
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
     }
   },
   "nyc": {
