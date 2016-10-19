@@ -1,17 +1,16 @@
 const tsc = require('typescript');
-const tsConfig = require('../tsconfig.json');
+
+const { compilerOptions } = require( '../tsconfig.json' );
+const { options } = tsc.convertCompilerOptionsFromJson( compilerOptions );
 
 module.exports = {
-  process(src, path) {
-    if (path.endsWith('.ts') || path.endsWith('.tsx')) {
+  process(src, filename) {
+    if (filename.endsWith('.ts') || filename.endsWith('.tsx')) {
+      // compile by tsconfig
       return tsc.transpile(
         src,
-        tsc.convertCompilerOptionsFromJson(tsConfig.compilerOptions),
-        // {
-        //   module: tsc.ModuleKind.CommonJS,
-        //   jsx: tsc.JsxEmit.React,
-        // },
-        path,
+        options,
+        filename,
         []
       );
     }
