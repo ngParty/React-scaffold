@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import { shallow } from 'enzyme';
+// import { expect } from 'chai';
 import * as React from 'react';
+import { shallow } from 'enzyme';
 
 import { App } from './App';
 import { MenuList } from './shared/components/menu-list/MenuList';
@@ -10,10 +10,10 @@ describe( '<App/>', () => {
     const wrapper = shallow( <App>hello</App> );
 
     expect( wrapper.contains(
-      <div className={undefined}>
+      <div className='container'>
         <MenuList/>
         <div>hello</div>
       </div>
-    ) ).to.equal( true );
+    ) ).toEqual( true );
   } );
 } );

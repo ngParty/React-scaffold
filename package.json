@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "pretest": "npm run lint",
+    "test:jest": "jest",
     "test": "mocha --require config/setup-browser-env --watch-extensions tsx,ts --colors src/**/*.spec.ts*",
     "test:watch": "npm run test -- --watch",
     "cover": "nyc npm run test",
@@ -32,6 +33,20 @@
     "url": "https://github.com/ngParty/React-scaffold/issues"
   },
   "homepage": "https://github.com/ngParty/React-scaffold#readme",
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "scriptPreprocessor": "<rootDir>/config/preprocessor.js",
+    "testRegex": "/src/.*\\.spec\\.(ts|tsx|js)$",
+    "moduleNameMapper": {
+      "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/fileMock.js",
+      "^.+\\.(css|less|sass)$": "identity-obj-proxy"
+    }
+  },
   "nyc": {
     "reporter": [
       "lcov",
@@ -51,11 +66,9 @@
     ]
   },
   "devDependencies": {
-    "@types/chai": "3.4.34",
     "@types/enzyme": "2.4.36",
-    "@types/mocha": "2.2.32",
+    "@types/jest": "15.1.32",
     "@types/react-addons-test-utils": "0.14.15",
-    "@types/sinon": "1.16.31",
     "awesome-typescript-loader": "2.2.4",
     "chai": "3.5.0",
     "css-loader": "0.25.0",
@@ -63,9 +76,8 @@
     "extract-text-webpack-plugin": "2.0.0-beta.4",
     "html-webpack-plugin": "2.22.0",
     "jsdom": "9.6.0",
-    "mocha": "3.1.2",
-    "nodemon": "1.11.0",
-    "nyc": "8.3.1",
+    "jest": "16.0.1",
+    "identity-obj-proxy": "3.0.0",
     "postcss-cssnext": "2.8.0",
     "postcss-loader": "0.13.0",
     "progress-bar-webpack-plugin": "1.9.0",
