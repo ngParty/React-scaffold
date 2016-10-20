@@ -51,24 +51,6 @@
       }
     }
   },
-  "nyc": {
-    "reporter": [
-      "lcov",
-      "text",
-      "html"
-    ],
-    "extension": [
-      ".tsx",
-      ".ts"
-    ],
-    "exclude": [
-      "**/*.spec.ts",
-      "**/*.spec.tsx"
-    ],
-    "include": [
-      "src/**"
-    ]
-  },
   "devDependencies": {
     "@types/enzyme": "2.4.36",
     "@types/jest": "15.1.32",
