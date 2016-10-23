@@ -1,7 +1,8 @@
 import * as React from 'react';
+
 import * as styles from './Home.css';
 
-export const Home = () => {
+const Home = () => {
   return (
     <div>
       <h2 className={styles.header}>Home</h2>
