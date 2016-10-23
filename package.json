@@ -1,18 +1,16 @@
 {
   "name": "react-scaffold",
   "version": "1.0.0",
-  "description": "An React Scaffold featuring React (Tests, Dev/Prod), Visual Basic 6.0, Mocha, NYC, TypeScript, TsLint, and Webpack2 by @ngParty Team",
+  "description": "An React Scaffold featuring React (Tests, Dev/Prod), Jest, TypeScript, TsLint, and Webpack2 by @ngParty Team",
   "main": "index.js",
   "scripts": {
     "pretest": "npm run lint",
-    "test": "mocha --require config/setup-browser-env --watch-extensions tsx,ts --colors src/**/*.spec.ts*",
-    "test:watch": "npm run test -- --watch",
-    "cover": "nyc npm run test",
-    "cover:watch": "nodemon --quiet --watch src --ext ts,tsx --exec npm run cover",
-    "check-coverage": "nyc --check-coverage --statements 80 --branches 80 --functions 80 --lines 80 npm test",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "lint": "tslint \"src/**/*.tsx\" \"src/**/*.ts\" --exclude \"src/**/*.d.ts\"",
     "start": "webpack-dev-server --env.dev --hot",
-    "build": "npm run check-coverage && rimraf dist && webpack --env.prod"
+    "build": "npm run test:coverage && rimraf dist && webpack --env.prod"
   },
   "repository": {
     "type": "git",
@@ -22,9 +20,7 @@
     "react",
     "typescript",
     "webpack2",
-    "mocha",
-    "enzyme",
-    "jsdom"
+    "jest"
   ],
   "author": "@ngPartyCz",
   "license": "ISC",
@@ -32,48 +28,49 @@
     "url": "https://github.com/ngParty/React-scaffold/issues"
   },
   "homepage": "https://github.com/ngParty/React-scaffold#readme",
-  "nyc": {
-    "reporter": [
-      "lcov",
-      "text",
-      "html"
+  "jest": {
+    "bail": true,
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
     ],
-    "extension": [
-      ".tsx",
-      ".ts"
-    ],
-    "exclude": [
-      "**/*.spec.ts",
-      "**/*.spec.tsx"
-    ],
-    "include": [
-      "src/**"
-    ]
+    "scriptPreprocessor": "<rootDir>/config/preprocessor.js",
+    "testRegex": "<rootDir>/src/.*\\.spec\\.(ts|tsx|js)$",
+    "moduleNameMapper": {
+      "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/fileMock.js",
+      "^.+\\.(css|less|sass)$": "identity-obj-proxy"
+    },
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   },
   "devDependencies": {
-    "@types/chai": "3.4.34",
     "@types/enzyme": "2.4.36",
-    "@types/mocha": "2.2.32",
+    "@types/jest": "15.1.32",
+    "@types/node": "6.0.45",
     "@types/react-addons-test-utils": "0.14.15",
-    "@types/sinon": "1.16.31",
     "awesome-typescript-loader": "2.2.4",
-    "chai": "3.5.0",
     "css-loader": "0.25.0",
     "enzyme": "2.4.1",
     "extract-text-webpack-plugin": "2.0.0-beta.4",
     "html-webpack-plugin": "2.22.0",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "16.0.1",
     "jsdom": "9.6.0",
-    "mocha": "3.1.2",
-    "nodemon": "1.11.0",
-    "nyc": "8.3.1",
     "postcss-cssnext": "2.8.0",
     "postcss-loader": "0.13.0",
     "progress-bar-webpack-plugin": "1.9.0",
     "react-addons-test-utils": "15.3.0",
+    "react-hot-loader": "3.0.0-beta.6",
     "rimraf": "2.5.4",
-    "sinon": "1.17.6",
     "style-loader": "0.13.1",
-    "ts-node": "1.4.3",
     "tslint": "3.15.1",
     "tslint-react": "1.0.0",
     "typescript": "2.0.3",

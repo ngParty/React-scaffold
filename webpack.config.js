@@ -18,22 +18,23 @@ module.exports = (env) => {
 
   return {
     context: resolve('src'),
-    entry: {
-      app: './main.tsx'
-    },
+    entry: removeEmpty( [
+      // this must be executed first for the HMR to work correctly
+      ifNotProd( 'react-hot-loader/patch' ),
+      './main.tsx'
+    ] ),
     output: {
       filename: '[name].[hash].js',
       path: resolve('dist'),
       // Include comments with information about the modules.
       pathinfo: ifNotProd(),
     },
-
     resolve: {
-        extensions: [
-            '.js',
-            '.ts',
-            '.tsx'
-        ]
+      extensions: [
+        '.js',
+        '.ts',
+        '.tsx'
+      ]
     },
 
     devtool: ifProd('source-map', 'cheap-module-source-map'),
@@ -130,6 +131,9 @@ module.exports = (env) => {
           NODE_ENV: ifProd('"production"', '"development"')
         }
       }),
+
+      //prints more readable module names in the browser console on HMR updates
+      ifNotProd( new webpack.NamedModulesPlugin() ),
 
       ifProd(new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',

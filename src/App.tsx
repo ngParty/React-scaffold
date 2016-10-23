@@ -1,19 +1,26 @@
 import * as React from 'react';
-import { StatelessComponent, ReactNode } from 'react';
+import { StatelessComponent } from 'react';
+import { IndexRoute, Route, Router, hashHistory } from 'react-router';
 
-import * as styles from './App.css';
+import Home from './home/Home';
+import About from './about/About';
+import NotFound from './not-found/NotFound';
+import { Layout } from './shared/components/layout/Layout';
 
-import { MenuList } from './shared/components/menu-list/MenuList';
+interface AppProps extends React.DOMAttributes<any> {}
 
-type AppProps = {
-  children?: ReactNode
-}
+const staticRoutes = (
+  <Router history={hashHistory}>
+    <Route path="/" component={Layout}>
+      <IndexRoute component={Home}/>
+      <Route path="/about" component={About}/>
+      <Route path="/*" component={NotFound}/>
+    </Route>
+  </Router>
+);
 
-export const App: StatelessComponent<AppProps> = ({children}) => {
-  return (
-    <div className={styles.container}>
-      <MenuList/>
-      <div>{children}</div>
-    </div>
-  );
+const App: StatelessComponent<AppProps> = () => {
+  return ( staticRoutes );
 };
+
+export default App;
