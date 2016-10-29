@@ -1,33 +1,26 @@
-import { Router, RouterState } from 'react-router';
+import { ReactStateDeclaration } from 'ui-router-react';
+import { homeState } from './home/Home.routing';
+import { faqState } from './faq/Faq.routing';
+import { notFoundState } from './not-found/NotFound.routing';
 
-import { loadIndexRoute, errorLoading, loadRoute, RouterAsyncCallback } from './shared/utils/router-utils';
-import App from './App';
-
-function createRoutes( /*store*/ ): Router.RouteConfig {
-  // Create reusable async injectors using getAsyncInjectors factory
-  // const { injectReducer, injectSagas } = getAsyncInjectors(store);
-
-  return [
-    {
-      path: '*',
-      getComponent( nextState: RouterState, callback: RouterAsyncCallback ) {
-        System.import( `.${ nextState.location.pathname }/index` )
-          .then( loadRoute( callback ) )
-          .catch( errorLoading( callback ) );
-      }
-    }
-  ];
+const aboutStateLazyLoaded: ReactStateDeclaration = {
+  // name and url should be the same as the root module state config,
+  // this definition will be replaced by lazy loaded config
+  name: 'about',
+  url: '/about',
+  lazyLoad: (transition) => {
+    return System.import('./about').then(module => {
+      // const artificialDelay = new Promise((resolve) => {
+        // setTimeout(() => {
+          // resolve(module.states)
+        // }, 500)
+      // });
+      // return artificialDelay
+      return module.states
+    })
+  }
 }
 
-export const appRouting: Router.RouteConfig = {
-  path: '/',
-  component: App,
-  // async IndexRoute
-  getIndexRoute(partialNextState, cb) {
-    System.import( './home' )
-      .then( loadIndexRoute( cb ) )
-      .catch( errorLoading( cb ) );
-  },
-  // static child routes definition ( they are loaded async )
-  childRoutes: createRoutes()
-};
+export const missStateRule = notFoundState.url;
+export default [homeState, aboutStateLazyLoaded, faqState, notFoundState];
+

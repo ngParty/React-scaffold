@@ -4,3 +4,7 @@
 .navItem {
   padding: .5em;
 }
+.active{
+  font-weight: bold;
+  color: navy
+}
