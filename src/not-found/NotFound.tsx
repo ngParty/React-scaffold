@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StatelessComponent } from 'react';
 
-const NotFound: StatelessComponent<void> = () => {
+const NotFound: StatelessComponent<any> = () => {
   return (
     <div>Not Found baby!</div>
   );

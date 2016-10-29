@@ -9,10 +9,11 @@ interface LazilyMatchProps {
 export const LazilyMatch: StatelessComponent<LazilyMatchProps> = ({pattern,getComponent}) => {
   return <Match
     pattern={pattern}
-    children={({matched}) => {
+    children={(props) => {
+      const {matched} = props;
       return matched && (
         <LazilyLoad modules={{ Component: () => importLazy(getComponent()) }} >
-          {({Component}: { Component: React.ComponentClass<any> }) => (<Component />)}
+          {({Component}: { Component: React.ComponentClass<any> }) => (<Component {...props}/>)}
         </LazilyLoad>
       )
     } }

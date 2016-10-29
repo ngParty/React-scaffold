@@ -1,9 +1,8 @@
 declare module 'react-router' {
-
   interface HashMap {
     [key: string]: any
   }
-  export interface InjectedRouteProps {
+  interface InjectedRouteProps {
     location: LinkToConfig,
     params: {},
     pattern: string,
@@ -26,6 +25,7 @@ declare module 'react-router' {
     onClick?: Function,
     transition: Function,
   }
+
   interface LinkProps {
     to: string|LinkToConfig,
     isActive?: ( location?: Location, props?: any[] )=>boolean,
@@ -35,14 +35,17 @@ declare module 'react-router' {
     activeOnlyWhenExact?: boolean,
   }
   interface BaseOutletProps {
-    component?: React.ReactElement,
+    component?: React.ReactType,
+  }
+  interface MatchChildrenProps extends InjectedRouteProps{
+    matched: boolean
   }
   interface MatchProps extends BaseOutletProps {
     pattern: string,
     render?: ( props?: InjectedRouteProps )=>any,
     exactly?: boolean,
     location?: {},
-    children?: ( props:{matched:boolean,[key:string]:any} )=>any,
+    children?: ( props: MatchChildrenProps )=>any,
   }
   interface MissProps extends BaseOutletProps {
     render?: ( props: {location: {}} )=>any
