@@ -9,13 +9,25 @@ export const MenuList: StatelessComponent<void> = () => {
     <nav className={styles.nav}>
       <ul>
         <li className={styles.navItem}>
-          <UISrefActive class={styles.active}><UISref to="home"><a>Home</a></UISref></UISrefActive>
+          <UISrefActive class={styles.active}>
+            <UISref to="home">
+              <a>Home</a>
+            </UISref>
+          </UISrefActive>
         </li>
         <li className={styles.navItem}>
-          <UISrefActive class={styles.active}><UISref to="about"><a>About</a></UISref></UISrefActive>
+          <UISrefActive class={styles.active}>
+            <UISref to="about">
+              <a>About</a>
+            </UISref>
+          </UISrefActive>
         </li>
         <li className={styles.navItem}>
-          <UISrefActive class={styles.active}><UISref to="faq"><a>FAQ</a></UISref></UISrefActive>
+          <UISrefActive class={styles.active}>
+            <UISref to="faq">
+              <a>FAQ</a>
+            </UISref>
+          </UISrefActive>
         </li>
       </ul>
     </nav>
