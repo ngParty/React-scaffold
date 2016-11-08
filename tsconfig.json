@@ -4,6 +4,7 @@
     "target": "es5",
     "noImplicitAny": true,
     "sourceMap": true,
+    "noEmitHelpers": true,
     "moduleResolution": "node",
     "outDir": "ts-output",
     "rootDir": "./",

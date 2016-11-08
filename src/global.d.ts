@@ -1,3 +1,6 @@
+// support NodeJS modules without type definitions
+declare module '*';
+
 declare module '*.css' {
   let styles: any;
   export = styles;
@@ -7,12 +10,30 @@ declare module '*.html' {
   export = html;
 }
 
+//-------------------------------------------------------------------
+// Declare Globals
+//-------------------------------------------------------------------
+
+declare const System: SystemJS.System;
+// Extra variables that live on Global that will be replaced by webpack DefinePlugin
+declare const NODE_ENV: string;
+
+
+//-------------------------------------------------------------------
+// extend existing definitions
+//-------------------------------------------------------------------
+
+// extend Node `module` types
+interface NodeModule extends WebpackModule.Module {}
+
+
+
 declare module 'react-hot-loader' {
   export class AppContainer extends React.Component<void, void> {}
 }
 
 
-declare namespace HotReload {
+declare namespace WebpackModule {
   interface Module {
     id: string;
     filename: string;
@@ -139,11 +160,3 @@ declare namespace SystemJS {
     import<TModule>( moduleName: string, normalizedParentName?: string ): Promise<TModule>;
   }
 }
-
-// declare globals:
-declare const System: SystemJS.System;
-
-// extend existing definitions:
-
-// extend Node `module` types
-interface NodeModule extends HotReload.Module {}

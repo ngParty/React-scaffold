@@ -9,7 +9,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "tslint \"src/**/*.tsx\" \"src/**/*.ts\" --exclude \"src/**/*.d.ts\"",
-    "start": "webpack-dev-server --env.dev --hot",
+    "start": "webpack-dev-server --env.dev --hot --history-api-fallback",
     "build": "npm run test:coverage && rimraf dist && webpack --env.prod"
   },
   "repository": {
@@ -60,12 +60,15 @@
     "css-loader": "0.25.0",
     "enzyme": "2.4.1",
     "extract-text-webpack-plugin": "2.0.0-beta.4",
+    "file-loader": "0.9.0",
     "html-webpack-plugin": "2.22.0",
     "identity-obj-proxy": "3.0.0",
     "jest": "16.0.1",
     "jsdom": "9.6.0",
+    "json-loader": "0.5.4",
     "postcss-cssnext": "2.8.0",
     "postcss-loader": "0.13.0",
+    "postcss-reporter": "1.4.1",
     "progress-bar-webpack-plugin": "1.9.0",
     "react-addons-test-utils": "15.3.0",
     "react-hot-loader": "3.0.0-beta.6",
@@ -73,7 +76,7 @@
     "style-loader": "0.13.1",
     "tslint": "3.15.1",
     "tslint-react": "1.0.0",
-    "typescript": "2.0.3",
+    "typescript": "2.0.8",
     "webpack": "2.1.0-beta.25",
     "webpack-config-utils": "2.1.0",
     "webpack-dev-server": "2.1.0-beta.9"
@@ -82,8 +85,10 @@
     "@types/react": "0.14.41",
     "@types/react-dom": "0.14.18",
     "@types/react-router": "2.0.38",
+    "core-js": "2.4.1",
     "react": "15.3.2",
     "react-dom": "15.3.2",
-    "react-router": "2.8.1"
+    "react-router": "2.8.1",
+    "ts-helpers": "1.1.2"
   }
 }

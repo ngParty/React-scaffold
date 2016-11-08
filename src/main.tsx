@@ -2,6 +2,11 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
+if ( process.env.NODE_ENV === 'development' ) {
+  // this must be executed first for the HMR to work correctly
+  require( 'react-hot-loader/patch' );
+}
+
 import './styles.css';
 import App from './App';
 
