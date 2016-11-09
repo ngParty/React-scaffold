@@ -1,0 +1,27 @@
+exports[`test should render <Home/> 1`] = `
+<div>
+  <h2
+    className="header">
+    Home
+  </h2>
+  <div>
+    Hello from Sofia!
+  </div>
+  <section>
+    <div
+      className="myLogo" />
+    <ngPartyCZ_01_png_1.default
+      alt="ngParty logo via SVG"
+      src={undefined}
+      width={150} />
+    <ngPartyCZ_01_png_1.default
+      alt="ngParty logo via IMG"
+      src={undefined}
+      width={150} />
+    <ngPartyCZ_01_png_1.default
+      alt="ngParty Logo via Path"
+      src="../../assets/img/ngPartyCZ_01.png"
+      width={250} />
+  </section>
+</div>
+`;

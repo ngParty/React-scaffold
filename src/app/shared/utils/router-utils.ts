@@ -10,7 +10,7 @@ type ComponentModule = {
 export function errorLoading( cb: RouterAsyncCallback ) {
   return ( err: any ) => {
     console.error( 'Dynamic page loading failed', err );
-    System.import('../../not-found')
+    System.import('../../not-found/index')
       .then(loadRoute(cb))
       .catch(console.error);
   };

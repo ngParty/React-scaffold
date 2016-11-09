@@ -32,6 +32,15 @@ declare module 'react-hot-loader' {
   export class AppContainer extends React.Component<void, void> {}
 }
 
+declare module 'react-test-renderer' {
+  const renderer: Renderer;
+  interface Renderer {
+    create(jsx: JSX.Element): Renderer,
+    toJSON(): JSON,
+  }
+  export = renderer;
+}
+
 
 declare namespace WebpackModule {
   interface Module {

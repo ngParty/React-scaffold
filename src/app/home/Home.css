@@ -1,0 +1,17 @@
+:root {
+  --mainColor: tomato;
+}
+
+.header {
+  color: var(--mainColor);
+  padding: 1em;
+}
+
+.my-logo {
+  color: var(--mainColor);
+  width: 100px;
+  height: 100px;
+  padding: 10px;
+  background: url("../../assets/img/ngPartyCZ_01.png") no-repeat;
+  background-size: contain;
+}

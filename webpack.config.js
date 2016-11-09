@@ -24,6 +24,13 @@ const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
  */
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 
+/**
+ * Copy files and directories in webpack
+ * We need this for handling /assets/*
+ * https://github.com/kevlened/copy-webpack-plugin
+ */
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 // PostCSS plugins
 /**
  * PostCSS-cssnext is a PostCSS plugin that helps you to use the latest CSS syntax today.
@@ -61,7 +68,9 @@ module.exports = ( env ) => {
       // Include comments with information about the modules.
       pathinfo: ifNotProd(),
     },
-    resolve: { extensions: [ '.js', '.ts', '.tsx' ] },
+    resolve: {
+      extensions: [ '.js', '.ts', '.tsx' ],
+    },
 
 
     /**
@@ -84,12 +93,31 @@ module.exports = ( env ) => {
         {
           // Do not transform vendor's CSS with CSS-modules
           // The point is that they remain in global scope.
-          // Since we require these CSS files in our JS or CSS files,
-          // they will be a part of our compilation either way.
-          // So, no need for ExtractTextPlugin here.
           test: /\.css$/,
           include: /node_modules/,
-          use: [ 'style-loader', 'css-loader' ],
+          // @TODO replace with "use", we need to use legacy "loader" instead of "use" to make ExtractTextPlugin@2-beta.4 work
+          loader: ifNotProd(
+            [
+              'style-loader',
+              {
+                loader: 'css-loader',
+                query: { sourceMap: true, }
+              }
+            ],
+            ExtractTextPlugin.extract( {
+              fallbackLoader: 'style-loader',
+              loader: [
+                {
+                  loader: 'css-loader',
+                  // @TODO replace with "options" when ExtractTextPlugin is fixed
+                  query: {
+                    minimize: true,
+                  }
+                }
+              ],
+
+            } )
+          )
         },
         {
           test: /\.css$/,
@@ -105,6 +133,8 @@ module.exports = ( env ) => {
                   // A CSS Module is a CSS file in which all class names and animation names are scoped locally by default.
                   // https://github.com/css-modules/css-modules
                   modules: true,
+                  // By default, the exported JSON keys mirror the class names. If you want to camelize class names (useful in Javascript)
+                  camelCase: true,
                   sourceMap: true,
                   importLoaders: 1,
                   localIdentName: '[name]__[local]___[hash:base64:5]',
@@ -152,10 +182,51 @@ module.exports = ( env ) => {
               ]
             } ) )
         },
-        { test: /\.json$/, loader: 'json-loader' },
         {
-          test: /.(woff(2)?|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,
-          loader: 'file-loader'
+          test: /\.json$/,
+          use: 'json-loader'
+        },
+        // Fonts Loading
+        {
+          test: /\.(woff(2)?|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,
+          use: 'file-loader'
+        },
+        // File loader for supporting images, for example, in CSS files.
+        // @FIXME url from css doesnt work because bug with sourceMaps within css-loader https://github.com/webpack/css-loader/issues/296
+        // @FIXME svg doesn't work, investigate
+        {
+          test: /\.(gif|png|jpe?g|svg)$/i,
+          use: removeEmpty(
+            [
+              {
+                // @TODO file loader doesn't support webpack 2 api (use,options)
+                /**
+                 * The url loader works like the file loader, but can return a Data Url if the file is smaller than a byte limit.
+                 * The limit can be specified with a query parameter. (Defaults to no limit)
+                 * If the file is greater than the limit (in bytes) the file-loader is used and all query parameters are passed to it.
+                 */
+                loader: 'url-loader',
+                query: {
+                  // byte limit in bytes ( 10kb )
+                  limit: 10 * 1000,
+                  hashType: 'sha512',
+                  digestType: 'hex',
+                  name: '[path][name].[hash].[ext]',
+                }
+              },
+              ifProd(
+                {
+                  loader: 'image-webpack-loader',
+                  query: {
+                    optimizationLevel: 7,
+                    interlaced: false,
+                    pngquant: { quality: '65-90', speed: 4 },
+                    mozjpeg: { quality: 65 }
+                  }
+                }
+              )
+            ]
+          )
         },
       ],
     },
@@ -220,6 +291,19 @@ module.exports = ( env ) => {
         )
       } ),
 
+      /**
+       * Plugin: CopyWebpackPlugin
+       * Description: Copy files and directories in webpack.
+       *
+       * Copies project static assets.
+       */
+      new CopyWebpackPlugin( [
+        {
+          from: './assets',
+          to: 'assets',
+        }
+      ] ),
+
       // Set NODE_ENV to enable production react version
       new webpack.DefinePlugin( {
         'process.env': { NODE_ENV: ifProd( '"production"', '"development"' ) }
@@ -233,7 +317,10 @@ module.exports = ( env ) => {
 
       // We use ExtractTextPlugin so we get a seperate CSS file instead
       // of the CSS being in the JS and injected as a style tag
-      ifProd( new ExtractTextPlugin( '[name].[contenthash].css' ) ),
+      ifProd( new ExtractTextPlugin( {
+        filename: '[name].[contenthash].css',
+        allChunks: true,
+      } ) ),
 
       ifProd( new webpack.optimize.CommonsChunkPlugin( {
         names: ['polyfills', 'vendor']
