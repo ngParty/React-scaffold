@@ -29,7 +29,7 @@ interface NodeModule extends WebpackModule.Module {}
 
 
 declare module 'react-hot-loader' {
-  export class AppContainer extends React.Component<void, void> {}
+  export class AppContainer extends React.Component<any, void> {}
 }
 
 declare module 'react-test-renderer' {
