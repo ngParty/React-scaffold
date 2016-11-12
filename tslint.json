@@ -60,12 +60,18 @@
       "check-whitespace"
     ],
     "radix": true,
-    "semicolon": true,
+    "semicolon": [
+      true,
+      "always",
+      "ignore-interfaces"
+    ],
     "triple-equals": [
       true,
       "allow-null-check"
     ],
-    "use-strict": true,
+    "use-strict": [
+      true
+    ],
     "typedef-whitespace": [
       true,
       {
@@ -120,6 +126,8 @@
       "check-function-in-method"
     ],
     "ordered-imports": false,
-    "interface-name": false
+    "interface-name": [
+      false
+    ]
   }
 }
