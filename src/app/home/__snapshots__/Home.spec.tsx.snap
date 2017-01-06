@@ -10,15 +10,15 @@ exports[`test should render <Home/> 1`] = `
   <section>
     <div
       className="myLogo" />
-    <ngPartyCZ_01_png_1.default
+    <img
       alt="ngParty logo via SVG"
       src={undefined}
       width={150} />
-    <ngPartyCZ_01_png_1.default
+    <img
       alt="ngParty logo via IMG"
       src={undefined}
       width={150} />
-    <ngPartyCZ_01_png_1.default
+    <img
       alt="ngParty Logo via Path"
       src="../../assets/img/ngPartyCZ_01.png"
       width={250} />

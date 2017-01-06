@@ -1,8 +1,7 @@
-import * as React from 'react';
 import { RouteComponent, RouterState, Router } from 'react-router';
 
-export type RouterAsyncCallback = ( error: Error, module: RouteComponent ) => void;
-export type RouterAsyncIndexCallback = ( error: Error, indexRoute: Router.RouteConfig ) => void;
+export type RouterAsyncCallback = ( error: Error | null, module: RouteComponent ) => void;
+export type RouterAsyncIndexCallback = ( error: Error | null, indexRoute: Router.RouteConfig ) => void;
 type ComponentModule = {
   default: RouteComponent
 };

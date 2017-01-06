@@ -1,6 +1,7 @@
 const { resolve } = require( 'path' );
 
 const webpack = require( 'webpack' );
+const { CommonsChunkPlugin, UglifyJsPlugin } = webpack.optimize;
 
 // plugins
 /**
@@ -31,6 +32,8 @@ const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
  */
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const { CheckerPlugin } = require('awesome-typescript-loader');
+
 // PostCSS plugins
 /**
  * PostCSS-cssnext is a PostCSS plugin that helps you to use the latest CSS syntax today.
@@ -58,9 +61,8 @@ module.exports = ( env ) => {
     context: resolve( __dirname, 'src' ),
     // The point or points to enter the application.
     entry: {
-      'polyfills': './polyfills.ts',
-      'vendor': './vendor.ts',
-      'main': './main.tsx'
+      polyfills: './polyfills.ts',
+      main: './main.tsx'
     },
     output: {
       filename: '[name].[hash].js',
@@ -86,7 +88,7 @@ module.exports = ( env ) => {
         // Typescript
         {
           test: /\.tsx?$/,
-          exclude: /node_modules/,
+          include: /src/,
           use: [ 'awesome-typescript-loader' ]
         },
         // CSS
@@ -315,6 +317,14 @@ module.exports = ( env ) => {
       // prints more readable module names in the browser console on HMR updates
       ifNotProd( new webpack.NamedModulesPlugin() ),
 
+      /*
+       * Plugin: ForkCheckerPlugin
+       * Description: Do type checking in a separate process, so webpack don't need to wait.
+       *
+       * See: https://github.com/s-panferov/awesome-typescript-loader#forkchecker-boolean-defaultfalse
+       */
+      ifNotProd( new CheckerPlugin() ),
+
       // We use ExtractTextPlugin so we get a seperate CSS file instead
       // of the CSS being in the JS and injected as a style tag
       ifProd( new ExtractTextPlugin( {
@@ -322,21 +332,32 @@ module.exports = ( env ) => {
         allChunks: true,
       } ) ),
 
-      ifProd( new webpack.optimize.CommonsChunkPlugin( {
-        names: ['polyfills', 'vendor']
-      } ) ),
 
-      ifProd( new webpack.optimize.CommonsChunkPlugin( {
-        minChunks: Infinity,
-        name: 'inline',
-      } ) ),
+      /*
+       * Plugin: CommonsChunkPlugin
+       * Description: Shares common code between the pages.
+       * It identifies common modules and put them into a commons chunk.
+       *
+       * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
+       * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
+       */
+      new CommonsChunkPlugin({
+        name: 'polyfills',
+        chunks: ['polyfills']
+      }),
+      // This enables tree shaking of the vendor modules
+      new CommonsChunkPlugin({
+        name: 'vendor',
+        chunks: ['main'],
+        minChunks: (module, count) => /node_modules\//.test(module.resource)
+      }),
+      // Specify the correct order the scripts will be injected in
+      new CommonsChunkPlugin({
+        name: ['polyfills', 'vendor'].reverse()
+      }),
 
       // A plugin for a more aggressive chunk merging strategy.
       ifProd( new webpack.optimize.AggressiveMergingPlugin() ),
-
-      // Deduplicate node modules dependencies
-      // // Merge all duplicate modules
-      ifProd( new webpack.optimize.DedupePlugin() ),
 
       // Uglify bundles
       ifProd( new webpack.optimize.UglifyJsPlugin( {

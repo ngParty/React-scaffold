@@ -21,6 +21,4 @@ import 'core-js/es6/reflect';
 import 'core-js/es6/promise';
 
 
-// Typescript emit helpers polyfill
-// this won't be needed with TS >=2.1
-import 'ts-helpers';
+import 'tslib';

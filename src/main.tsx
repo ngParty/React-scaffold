@@ -1,8 +1,13 @@
+const isDev = process.env.NODE_ENV === 'development';
+
+// CSS
+import 'sanitize.css/sanitize.css';
+
 import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
-if ( process.env.NODE_ENV === 'development' ) {
+if ( isDev ) {
   // this must be executed first for the HMR to work correctly
   require( 'react-hot-loader/patch' );
 }
@@ -15,8 +20,9 @@ import App from './app/App';
 const main = () => {
   render(
     <AppContainer>
-      <App/>
-    </AppContainer>,
+      <App />
+    </AppContainer>
+    ,
     document.getElementById( 'app' )
   );
 };
@@ -24,11 +30,11 @@ const main = () => {
 main();
 
 
-if ( process.env === 'development' ) {
+if ( isDev ) {
 //   // Hot Module Replacement API
   if ( module.hot ) {
     module.hot.accept( './app/App', () => {
-      console.log( '🔁  HMR Reloading `./app/routes`...' );
+      console.log( '🔁  HMR Reloading `./app/App`...' );
       main();
     } );
   }
